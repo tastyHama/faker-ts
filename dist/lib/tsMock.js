@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -20,8 +24,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tsMock = exports.tsMockService = exports.TsMocker = void 0;
-var ts = __importStar(require("typescript"));
-var typescript_json_schema_1 = require("typescript-json-schema");
+var TJS = __importStar(require("typescript-json-schema"));
 var faker_1 = require("./faker");
 var tsWatcher_1 = require("./tsWatcher");
 var utils_1 = require("./utils");
@@ -32,17 +35,17 @@ var TsMocker = (function () {
         }
     }
     TsMocker.prototype.setProgram = function (program) {
-        var generator = (0, typescript_json_schema_1.buildGenerator)(program, { required: true });
+        var generator = TJS.buildGenerator(program, { required: true });
         if (generator === null) {
-            throw new Error('generator is null');
+            throw new Error("generator is null");
         }
         this.program = program;
         this.generator = generator;
     };
     TsMocker.prototype.generateSchema = function (fullTypeName, onlyIncludeFiles) {
-        if (fullTypeName === void 0) { fullTypeName = '*'; }
+        if (fullTypeName === void 0) { fullTypeName = "*"; }
         var generator = this.generator;
-        if (fullTypeName === '*') {
+        if (fullTypeName === "*") {
             return generator.getSchemaForSymbols(generator.getMainFileSymbols(this.program, onlyIncludeFiles));
         }
         else {
@@ -58,7 +61,7 @@ exports.TsMocker = TsMocker;
 function tsMockService(files, jsonCompilerOptions, basePath) {
     var mocker = new TsMocker();
     var options = (0, utils_1.getTsOptions)(jsonCompilerOptions, basePath);
-    (0, tsWatcher_1.tsWatcher)(files, options).on('afterProgramCreate', function (p) {
+    (0, tsWatcher_1.tsWatcher)(files, options).on("afterProgramCreate", function (p) {
         try {
             mocker.setProgram(p.getProgram());
         }
@@ -71,7 +74,7 @@ function tsMockService(files, jsonCompilerOptions, basePath) {
 exports.tsMockService = tsMockService;
 function tsMock(files, jsonCompilerOptions, basePath) {
     var options = (0, utils_1.getTsOptions)(jsonCompilerOptions, basePath);
-    var mocker = new TsMocker(ts.createProgram(files, options));
+    var mocker = new TsMocker(TJS.getProgramFromFiles(files, options));
     return mocker;
 }
 exports.tsMock = tsMock;
