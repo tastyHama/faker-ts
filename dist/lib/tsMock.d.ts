@@ -1,12 +1,11 @@
-import * as ts from 'typescript';
-import { JsonSchemaGenerator } from 'typescript-json-schema';
+import * as TJS from "typescript-json-schema";
 export declare class TsMocker {
-    generator: JsonSchemaGenerator;
-    program: ts.Program;
-    constructor(program?: ts.Program);
-    setProgram(program: ts.Program): void;
-    generateSchema(fullTypeName?: string, onlyIncludeFiles?: string[]): import("typescript-json-schema").Definition;
+    generator: TJS.JsonSchemaGenerator;
+    program: TJS.Program;
+    constructor(program?: TJS.Program);
+    setProgram(program: TJS.Program): void;
+    generateSchema(fullTypeName?: string, onlyIncludeFiles?: string[]): TJS.Definition;
     generateMock(fullTypeName: any, onlyIncludeFiles?: string[]): any;
 }
-export declare function tsMockService(files: string[], jsonCompilerOptions?: ts.CompilerOptions, basePath?: string): TsMocker;
-export declare function tsMock(files: string[], jsonCompilerOptions?: ts.CompilerOptions, basePath?: string): TsMocker;
+export declare function tsMockService(files: string[], jsonCompilerOptions?: TJS.CompilerOptions, basePath?: string): TsMocker;
+export declare function tsMock(files: string[], jsonCompilerOptions?: TJS.CompilerOptions, basePath?: string): TsMocker;

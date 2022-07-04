@@ -1,5 +1,6 @@
 import * as ts from 'typescript';
-export declare function getTsOptions(jsonCompilerOptions?: ts.CompilerOptions, basePath?: string): {
+import * as TJS from "typescript-json-schema";
+export declare function getTsOptions(jsonCompilerOptions?: TJS.CompilerOptions, basePath?: string): {
     allowJs?: boolean | undefined;
     allowSyntheticDefaultImports?: boolean | undefined;
     allowUmdGlobalAccess?: boolean | undefined;
@@ -36,6 +37,8 @@ export declare function getTsOptions(jsonCompilerOptions?: ts.CompilerOptions, b
     maxNodeModuleJsDepth?: number | undefined;
     module: ts.ModuleKind;
     moduleResolution?: ts.ModuleResolutionKind | undefined;
+    moduleSuffixes?: string[] | undefined;
+    moduleDetection?: ts.ModuleDetectionKind | undefined;
     newLine?: ts.NewLineKind | undefined;
     noEmit: boolean;
     noEmitHelpers?: boolean | undefined;

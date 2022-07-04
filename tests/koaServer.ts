@@ -1,9 +1,9 @@
 import Koa from 'koa';
 import Router from 'koa-router';
-import * as ts from 'typescript';
+import * as TJS from "typescript-json-schema";
 import { tsMockService } from '../lib/tsMock';
 
-export function createServer(files: string[], jsonCompilerOptions?: ts.CompilerOptions, basePath?: string) {
+export function createServer(files: string[], jsonCompilerOptions?: TJS.CompilerOptions, basePath?: string) {
   const app = new Koa();
   const router = new Router();
 

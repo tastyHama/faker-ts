@@ -1,7 +1,14 @@
 import * as ts from 'typescript';
+import * as TJS from "typescript-json-schema";
 
-export function getTsOptions(jsonCompilerOptions: ts.CompilerOptions = {}, basePath: string = './') {
-  const compilerOptions = ts.convertCompilerOptionsFromJson(jsonCompilerOptions, basePath).options;
+export function getTsOptions(
+  jsonCompilerOptions: TJS.CompilerOptions = {},
+  basePath: string = "./"
+) {
+  const compilerOptions = ts.convertCompilerOptionsFromJson(
+    jsonCompilerOptions,
+    basePath
+  ).options;
 
   return {
     noEmit: true,

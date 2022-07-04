@@ -1,3 +1,3 @@
 import Koa from 'koa';
-import * as ts from 'typescript';
-export declare function createServer(files: string[], jsonCompilerOptions?: ts.CompilerOptions, basePath?: string): Koa<Koa.DefaultState, Koa.DefaultContext>;
+import * as TJS from "typescript-json-schema";
+export declare function createServer(files: string[], jsonCompilerOptions?: TJS.CompilerOptions, basePath?: string): Koa<Koa.DefaultState, Koa.DefaultContext>;

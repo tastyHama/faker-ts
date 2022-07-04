@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -24,10 +28,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tsMock = void 0;
 var json_schema_faker_1 = __importDefault(require("json-schema-faker"));
-var ts = __importStar(require("typescript"));
+var TJS = __importStar(require("typescript-json-schema"));
 var typescript_json_schema_1 = require("typescript-json-schema");
 function tsMock(symbol, file, compilerOptions) {
-    var program = ts.createProgram([file], compilerOptions);
+    var program = TJS.getProgramFromFiles([file], compilerOptions);
     var schema = (0, typescript_json_schema_1.generateSchema)(program, symbol);
     return json_schema_faker_1.default.generate(schema, []);
 }

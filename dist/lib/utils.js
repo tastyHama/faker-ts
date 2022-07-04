@@ -12,7 +12,11 @@ var __assign = (this && this.__assign) || function () {
 };
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -34,7 +38,7 @@ exports.getTsOptions = void 0;
 var ts = __importStar(require("typescript"));
 function getTsOptions(jsonCompilerOptions, basePath) {
     if (jsonCompilerOptions === void 0) { jsonCompilerOptions = {}; }
-    if (basePath === void 0) { basePath = './'; }
+    if (basePath === void 0) { basePath = "./"; }
     var compilerOptions = ts.convertCompilerOptionsFromJson(jsonCompilerOptions, basePath).options;
     return __assign({ noEmit: true, emitDecoratorMetadata: true, experimentalDecorators: true, target: ts.ScriptTarget.ES5, module: ts.ModuleKind.CommonJS, allowUnusedLabels: true }, compilerOptions);
 }

@@ -1,29 +1,33 @@
-import * as ts from 'typescript';
-import { buildGenerator, JsonSchemaGenerator } from 'typescript-json-schema';
-import { fakerGenerate } from './faker';
-import { tsWatcher } from './tsWatcher';
-import { getTsOptions } from './utils';
+import * as TJS from "typescript-json-schema";
+import { fakerGenerate } from "./faker";
+import { tsWatcher } from "./tsWatcher";
+import { getTsOptions } from "./utils";
 
 export class TsMocker {
-  public generator: JsonSchemaGenerator;
-  public program: ts.Program;
-  constructor(program?: ts.Program) {
+  public generator: TJS.JsonSchemaGenerator;
+  public program: TJS.Program;
+  constructor(program?: TJS.Program) {
     if (program) {
       this.setProgram(program);
     }
   }
-  public setProgram(program: ts.Program) {
-    const generator = buildGenerator(program, { required: true });
+  public setProgram(program: TJS.Program) {
+    const generator = TJS.buildGenerator(program, { required: true });
     if (generator === null) {
-      throw new Error('generator is null');
+      throw new Error("generator is null");
     }
     this.program = program;
     this.generator = generator;
   }
-  public generateSchema(fullTypeName: string = '*', onlyIncludeFiles?: string[]) {
+  public generateSchema(
+    fullTypeName: string = "*",
+    onlyIncludeFiles?: string[]
+  ) {
     const { generator } = this;
-    if (fullTypeName === '*') {
-      return generator.getSchemaForSymbols(generator.getMainFileSymbols(this.program, onlyIncludeFiles));
+    if (fullTypeName === "*") {
+      return generator.getSchemaForSymbols(
+        generator.getMainFileSymbols(this.program, onlyIncludeFiles)
+      );
     } else {
       return generator.getSchemaForSymbol(fullTypeName);
     }
@@ -33,11 +37,15 @@ export class TsMocker {
   }
 }
 
-export function tsMockService(files: string[], jsonCompilerOptions?: ts.CompilerOptions, basePath?: string) {
+export function tsMockService(
+  files: string[],
+  jsonCompilerOptions?: TJS.CompilerOptions,
+  basePath?: string
+) {
   const mocker = new TsMocker();
   const options = getTsOptions(jsonCompilerOptions, basePath);
 
-  tsWatcher(files, options).on('afterProgramCreate', (p: ts.SemanticDiagnosticsBuilderProgram) => {
+  tsWatcher(files, options).on("afterProgramCreate", (p) => {
     try {
       mocker.setProgram(p.getProgram());
     } catch (error) {
@@ -47,8 +55,12 @@ export function tsMockService(files: string[], jsonCompilerOptions?: ts.Compiler
   return mocker;
 }
 
-export function tsMock(files: string[], jsonCompilerOptions?: ts.CompilerOptions, basePath?: string) {
+export function tsMock(
+  files: string[],
+  jsonCompilerOptions?: TJS.CompilerOptions,
+  basePath?: string
+) {
   const options = getTsOptions(jsonCompilerOptions, basePath);
-  const mocker = new TsMocker(ts.createProgram(files, options));
+  const mocker = new TsMocker(TJS.getProgramFromFiles(files, options));
   return mocker;
 }
